@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Base de datos Estudiantil</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">[[#{plantilla.titulo}]]</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<form th:action="@{/agregar}" method="get">
+							<button type="submit" class="btn btn-warning">[[#{estudiante.crear}]]</button>
+						</form>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous">
+    </script>
+    <br/>
+	<form class="in-line" th:action="@{/}" method="get" th:object="${estudiante}">
+	    <div class="form-group mx-sm-3 mb-1">
+		   <label for="buscar">[[#{estudiante.encontrar}]]:</label> 
+		   <input type="text" name="palabraClave" class="form-group" id="palabraClave" th:value="${palabraClave}"/>
+		   <input type="submit" class="btn btn-secondary mb-2" value="Filtrar"/> 
+	   </div>
+	</form>
+	<hr>
+	<br />
+	<br />
+	<br />
+	<div th:if="${estudiantes != null and !estudiantes.empty}">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.id}]]</th>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.nombre}]]</th>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.apellido}]]</th>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.email}]]</th>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.telefono}]]</th>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.dni}]]</th>
+					<th scope="col" style="background-color: powderblue;">[[#{estudiante.facultad}]]</th>
+					<th scope="col" style="background-color: powderblue;">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="estudiante: ${estudiantes}">
+				    <td th:text="${estudiante.idEstudiante}"></td>
+					<td th:text="${estudiante.nombre}"></td>
+					<td th:text="${estudiante.apellido}"></td>
+					<td th:text="${estudiante.email}"></td>
+					<td th:text="${estudiante.telefono}"></td>
+					<td th:text="${estudiante.dni}"></td>
+					<td th:text="${estudiante.facultad}"></td>
+					<td><a class="btn btn-warning" th:href="@{/editar/} + ${estudiante.idEstudiante}"
+						th:text="#{accion.editar}"></a>
+						&nbsp;
+					    <a  class= "btn btn-danger" th:href="@{/eliminar/} + ${estudiante.idEstudiante}"
+						th:text="#{accion.eliminar}"></a></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div th:if="${estudiantes == null or estudiantes.empty}">
+		[[#{estudiante.lista-vacia}]]</div>
+
+	<footer th:replace="layout/plantilla :: footer"></footer>
+</body>
+</html>
